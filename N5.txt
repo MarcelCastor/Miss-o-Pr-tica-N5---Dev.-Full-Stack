@@ -1,0 +1,81 @@
+!pip install Faker
+
+!pip install WordCloud
+
+!pip install num2words
+
+1- Chamada de bibliotecas e Criação de arquivo de dados.
+
+(Gravar e recuperar dados de arquivos textos)
+
+obs.: Necessária instalação das bibliotecas abaixo(Faker, WordCloud e num2words).
+
+from faker import Faker
+from num2words import num2words
+from wordcloud import WordCloud
+import matplotlib.pyplot as plt
+
+fk = Faker()
+
+dt=[]
+
+with open('dados.txt', 'w+') as file:
+  for i in range(10):
+    num = fk.name(), str(fk.random_int(1,10))
+    dt.append(num)
+    
+  for num in dt:
+    print(num)
+    file.write(f'{num}\n')
+
+
+
+
+2- Leitura do arquivo, extração dos valores, conversão para inteiro e Visualização do Histograma.
+
+arquivo = open('dados.txt', 'r') 
+content = arquivo.readlines() 
+
+db_hist = re.findall('\d+', str(content))
+
+graf_hist=[]
+for item in db_hist:
+    graf_hist.append(int(item))
+
+
+print(graf_hist)
+n, bins, colunas = plt.hist(graf_hist,facecolor='blue',alpha=0.75)
+
+plt.xlabel('Valores')
+plt.ylabel('Probabilidade')
+plt.title('Histograma dos valores')
+plt.grid(True)
+plt.show()
+
+3- Manipulando os valores inteiros, transformando em string única e Visualizando a Nuvem de Palavras.
+
+db_nuvem=[]
+for c in graf_hist:
+
+  num = num2words(c, lang='pt-br')
+  db_nuvem.append(num)
+ 
+db_nuvem = ",".join(db_nuvem)
+ 
+nuvem_palavras = WordCloud(background_color='black', width=800, height=400).generate(db_nuvem)
+plt.imshow(nuvem_palavras, interpolation ='bilinear')
+plt.axis('off')
+
+nuvem_palavras.to_file("Nuvem de palavras.png")
+
+
+
+Conclusão:
+A. É de extrema importãncia saber manipular arquivos txt, pois nos possibilita trabalhar com bkps, planilhas, listas e entre outro.
+
+B. É importante ter uma visualização de dados em um histograma, pois podemos comparar dados e identificar padrões que não poderíamos ver sem a ferramenta.
+
+C. A Nuvem de Palavras nos traz uma visualização mais rápida de um dado que muito se repete.
+
+
+
